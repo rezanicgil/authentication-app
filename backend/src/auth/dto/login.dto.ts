@@ -8,5 +8,6 @@ export class LoginDto {
   @IsNotEmpty({ message: 'Password cannot be empty' })
 
   
+  
   readonly password: string;
 }
