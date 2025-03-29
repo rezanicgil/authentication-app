@@ -1,2 +1,4 @@
-echo "Running pre-commit hooks..."
-npm run format && npm run lint
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx eslint --fix
