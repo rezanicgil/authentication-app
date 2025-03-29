@@ -51,7 +51,7 @@ const Home: React.FC = () => {
             <p className="text-center">Logged in as: {email}</p>
             <div className="flex justify-center mt-4">
                 <button
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded btn-"
+                    className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-xs"
                     onClick={() => {
                         localStorage.removeItem("access_token");
                         alert("You have been logged out.");
