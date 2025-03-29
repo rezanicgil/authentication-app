@@ -12,6 +12,7 @@ function App() {
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<LoginForm />} />
+            <Route path="*" element={<LoginForm />} />
           </Routes>
         </main>
       </div>

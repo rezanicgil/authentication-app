@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const isTokenExpired = (payload: any) => {
@@ -18,10 +18,10 @@ const decodeToken = (token: string) => {
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState<string | null>(null);
 
     useEffect(() => {
         const access_token = localStorage.getItem("access_token");
-        console.log("Access Token:", access_token);
 
         if (!access_token || typeof access_token !== "string") {
             console.error("Invalid or missing access token");
@@ -37,16 +37,21 @@ const Home: React.FC = () => {
             return;
         }
 
-        console.log("User is logged in");
+        if (tokenPayload.email) {
+            setEmail(tokenPayload.email);
+        } else {
+            console.error("Email not found in token payload");
+        }
+
     }, [navigate]);
 
     return (
         <div className="home">
             <h1 className="text-2xl text-center p-4">Welcome to the Home Page</h1>
-            <p className="text-center">You are logged in!</p>
+            <p className="text-center">Logged in as: {email}</p>
             <div className="flex justify-center mt-4">
                 <button
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded btn-"
                     onClick={() => {
                         localStorage.removeItem("access_token");
                         alert("You have been logged out.");
