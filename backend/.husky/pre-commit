@@ -1,5 +1,5 @@
 #!/bin/sh
-. "$(dirname "$0")/backend/_/husky.sh"
+. "$(dirname "$0")/_/husky.sh"
 
-echo "🔍 Husky pre-commit hook working.."
+echo "🔍 Husky pre-commit hook çalıştı!"
 npm run lint && npm run format
