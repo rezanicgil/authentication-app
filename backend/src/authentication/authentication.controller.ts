@@ -5,11 +5,11 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Req,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { LoginDto } from './dto/login.dto';
-import { validateDto } from '../utils/validation.util'; // Import the validation utility
-import { handleValidationError } from '../utils/validation.util';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -18,36 +18,20 @@ export class AuthController {
   constructor(private readonly authService: AuthenticationService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ access_token: string }> {
-    this.logger.log(`Login attempt for email: ${loginDto.email}`);
+  async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<{ access_token: string }> {
+    const ip = req.ip;
+    const maskedEmail = loginDto.email.replace(/(.{2}).+(@.+)/, '$1***$2');
+    this.logger.log(`Login attempt for email: ${maskedEmail} from IP: ${ip}`);
 
     try {
-      await validateDto(loginDto);
-
       const result = await this.authService.login(loginDto);
-      this.logger.log(`Login successful for email: ${loginDto.email}`);
+      this.logger.log(`Login successful for email: ${maskedEmail} from IP: ${ip}`);
       return result;
     } catch (error) {
-      this.logger.error(
-        `Login failed for email: ${loginDto.email}`,
-        error.stack,
-      );
-
-      handleValidationError(error, this.logger, { ...loginDto });
-
+      this.logger.warn(`Failed login attempt for email: ${maskedEmail} from IP: ${ip}`);
       if (error.message === 'Invalid credentials') {
-        this.logger.warn(`Invalid credentials for email: ${loginDto.email}`);
-        throw new HttpException(
-          'Invalid email or password',
-          HttpStatus.UNAUTHORIZED,
-        );
+        throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
       }
-
-      this.logger.error(
-        `Unexpected error during login for email: ${loginDto.email}`,
-        error.stack,
-      );
-
       throw new HttpException(
         'An unexpected error occurred. Please try again later.',
         HttpStatus.INTERNAL_SERVER_ERROR,
