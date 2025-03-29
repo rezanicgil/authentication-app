@@ -15,9 +15,6 @@ export class AuthController {
 
   constructor(private readonly authService: AuthService) {}
 
-  
-
-
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<{ access_token: string }> {
     this.logger.log(`Login attempt for email: ${loginDto.email}`);
