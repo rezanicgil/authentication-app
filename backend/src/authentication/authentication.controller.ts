@@ -28,13 +28,12 @@ export class AuthController {
       this.logger.log(`Login successful for email: ${loginDto.email}`);
       return result;
     } catch (error) {
-      
       this.logger.error(
         `Login failed for email: ${loginDto.email}`,
         error.stack,
       );
 
-      handleValidationError(error, this.logger, { ...loginDto});
+      handleValidationError(error, this.logger, { ...loginDto });
 
       if (error.message === 'Invalid credentials') {
         this.logger.warn(`Invalid credentials for email: ${loginDto.email}`);
@@ -48,7 +47,7 @@ export class AuthController {
         `Unexpected error during login for email: ${loginDto.email}`,
         error.stack,
       );
-      
+
       throw new HttpException(
         'An unexpected error occurred. Please try again later.',
         HttpStatus.INTERNAL_SERVER_ERROR,

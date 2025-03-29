@@ -26,7 +26,7 @@ export async function validateDto<T extends object>(dto: T): Promise<void> {
 export function handleValidationError(
   error: Error,
   logger: { warn: (message: string) => void },
-  context: Record<string, unknown>
+  context: Record<string, unknown>,
 ): void {
   if (error.message.startsWith('Validation failed')) {
     const contextInfo = Object.entries(context)
