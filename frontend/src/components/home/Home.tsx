@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const isTokenExpired = (payload: any) => {
-    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+    const currentTime = Math.floor(Date.now() / 1000); 
     return payload.exp && payload.exp < currentTime;
 };
 
 const decodeToken = (token: string) => {
     try {
-        const payload = JSON.parse(atob(token.split(".")[1])); // Decode the payload
+        const payload = JSON.parse(atob(token.split(".")[1])); 
         return payload;
     } catch (error) {
         console.error("Failed to decode token:", error);
@@ -20,30 +20,24 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const cookie = document.cookie.split('; ').find(row => row.startsWith('access_token='));
-        const access_token = cookie ? cookie.split('=')[1] : null;
-
-
-
+        const access_token = localStorage.getItem("access_token");
         console.log("Access Token:", access_token);
 
-        console.log("Cookie:", cookie);
-        // Check if the token exists and is a valid string
         if (!access_token || typeof access_token !== "string") {
             console.error("Invalid or missing access token");
             navigate("/login");
             return;
         }
 
-        // Decode the token to get the payload
         const tokenPayload = decodeToken(access_token);
 
-        // Check if the token is invalid or expired
         if (!tokenPayload || isTokenExpired(tokenPayload)) {
             console.error("Token is invalid or expired");
             navigate("/login");
             return;
         }
+
+        console.log("User is logged in");
     }, [navigate]);
 
     return (

@@ -11,8 +11,8 @@ export class JwtUtil {
     }
     const defaultOptions: SignOptions = {
       expiresIn: process.env.JWT_EXPIRATION
-        ? parseInt(process.env.JWT_EXPIRATION, 10)
-        : '1h',
+        ? parseInt(process.env.JWT_EXPIRATION)
+        : 14400, // Default to 4 hours
     };
     return sign(payload, secret, { ...defaultOptions, ...options });
   }

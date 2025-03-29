@@ -15,20 +15,12 @@ const LoginForm: React.FC = () => {
       password: password.trim(),
     };
 
-
     interface LoginResponse {
       access_token: string;
     }
 
     try {
-      const csrfTokenRow = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN='));
-      const csrfToken = csrfTokenRow ? csrfTokenRow.split('=')[1] : null;
-
-      if (!csrfToken) {
-        throw new Error("CSRF token not found.");
-      }
-
-      const response = await request<LoginResponse>("POST", "/auth/login", csrfToken, null, loginData);
+      const response = await request<LoginResponse>("POST", "/auth/login", null, loginData);
 
       if (response.status !== 201) {
         alert("Login failed. Please check your credentials.");
@@ -42,19 +34,15 @@ const LoginForm: React.FC = () => {
         throw new Error("No access token received.");
       }
 
-      document.cookie = `access_token=${access_token}; path=/; secure; SameSite=Strict`;
+      localStorage.setItem("access_token", access_token);
 
       alert("Login successful!");
       navigate("/home");
       setEmail("");
       setPassword("");
-    } catch (error: any) {
-      if (error.response && error.response.status === 401) {
-        alert("Invalid email or password.");
-      } else {
-        alert("An error occurred during login. Please try again later.");
-      }
+    } catch (error) {
       console.error("Login error:", error);
+      alert("An error occurred during login. Please try again.");
     }
   };
 
