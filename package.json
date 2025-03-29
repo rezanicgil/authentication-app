@@ -1,0 +1,23 @@
+{
+  "name": "authentication-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+    ,
+    "lint": "cd backend && npm run lint",
+    "format": "cd backend && npm run format"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rezanicgil/authentication-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rezanicgil/authentication-app/issues"
+  },
+  "homepage": "https://github.com/rezanicgil/authentication-app#readme"
+}
