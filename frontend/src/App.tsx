@@ -1,11 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import LoginForm from './components/login/LoginForm';
 function App() {
   return (
-    <div className="App">
-      <p>Authentication app</p>
+    <div className="App font-mono">
+      <main>
+        <LoginForm />
+      </main>
     </div>
   );
 }
