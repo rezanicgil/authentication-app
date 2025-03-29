@@ -5,9 +5,9 @@ export class LoginDto {
   readonly email: string;
 
   @IsString({ message: 'Password must be a string' })
-  @IsNotEmpty({ message: Password cannot be empty' })
+  @IsNotEmpty({ message: 'Password cannot be empty' })
 
-
+  
   
   readonly password: string;
 }
