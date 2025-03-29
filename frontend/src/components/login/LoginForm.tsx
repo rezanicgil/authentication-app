@@ -7,6 +7,10 @@ const LoginForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setEmail("");
+
+
+
+    
     setPassword("");
   };
 
