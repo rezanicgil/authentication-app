@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { sign, SignOptions } from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 
 dotenv.config();
 
@@ -9,6 +11,17 @@ dotenv.config();
 export class AuthService {
   async login(loginDto: LoginDto): Promise<{ access_token: string }> {
     const { email, password } = loginDto;
+    const loginValidationDto = plainToInstance(LoginDto, loginDto); // Use LoginDto directly
+    const errors = await validate(loginValidationDto);
+
+    if (errors.length > 0) {
+      throw new Error(
+        'Validation failed: ' +
+          errors
+            .map((err) => Object.values(err.constraints || {}).join(', '))
+            .join('; '),
+      );
+    }
 
     const user = {
       id: 1,
@@ -26,7 +39,9 @@ export class AuthService {
       throw new Error('JWT_SECRET is not defined in environment variables');
     }
     const options: SignOptions = {
-      expiresIn: process.env.JWT_EXPIRATION ? parseInt(process.env.JWT_EXPIRATION, 10) : '1h',
+      expiresIn: process.env.JWT_EXPIRATION
+        ? parseInt(process.env.JWT_EXPIRATION, 10)
+        : '1h',
     };
     const token = sign(payload, secret, options);
 

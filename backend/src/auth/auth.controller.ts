@@ -29,6 +29,11 @@ export class AuthController {
         error.stack,
       );
 
+      if (error.message.startsWith('Validation failed')) {
+        this.logger.warn(`Validation error for email: ${loginDto.email}`);
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
+
       if (error.message === 'Invalid credentials') {
         this.logger.warn(`Invalid credentials for email: ${loginDto.email}`);
         throw new HttpException(
