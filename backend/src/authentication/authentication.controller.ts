@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { LoginDto } from './dto/login.dto';
+import { validateDto } from '../utils/validation.util'; // Import the validation utility
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,8 @@ export class AuthController {
     this.logger.log(`Login attempt for email: ${loginDto.email}`);
 
     try {
+      await validateDto(loginDto); 
+
       const result = await this.authService.login(loginDto);
       this.logger.log(`Login successful for email: ${loginDto.email}`);
       return result;
@@ -28,11 +31,6 @@ export class AuthController {
         `Login failed for email: ${loginDto.email}`,
         error.stack,
       );
-
-      if (error.message.startsWith('Validation failed')) {
-        this.logger.warn(`Validation error for email: ${loginDto.email}`);
-        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-      }
 
       if (error.message === 'Invalid credentials') {
         this.logger.warn(`Invalid credentials for email: ${loginDto.email}`);
