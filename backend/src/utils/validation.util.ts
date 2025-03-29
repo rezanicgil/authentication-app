@@ -6,13 +6,13 @@ import { validate, ValidationError } from 'class-validator';
  * @returns A promise that resolves if the DTO is valid, or rejects with a validation error message.
  */
 export async function validateDto<T extends object>(dto: T): Promise<void> {
-    const errors: ValidationError[] = await validate(dto);
+  const errors: ValidationError[] = await validate(dto);
 
-    if (errors.length > 0) {
-        const errorMessages = errors
-            .map((err) => Object.values(err.constraints || {}).join(', '))
-            .join('; ');
+  if (errors.length > 0) {
+    const errorMessages = errors
+      .map((err) => Object.values(err.constraints || {}).join(', '))
+      .join('; ');
 
-        throw new Error(`Validation failed: ${errorMessages}`);
-    }
+    throw new Error(`Validation failed: ${errorMessages}`);
+  }
 }
