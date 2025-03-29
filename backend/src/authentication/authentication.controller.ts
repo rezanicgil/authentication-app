@@ -21,7 +21,7 @@ export class AuthController {
     this.logger.log(`Login attempt for email: ${loginDto.email}`);
 
     try {
-      await validateDto(loginDto); 
+      await validateDto(loginDto);
 
       const result = await this.authService.login(loginDto);
       this.logger.log(`Login successful for email: ${loginDto.email}`);

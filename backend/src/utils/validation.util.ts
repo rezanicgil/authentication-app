@@ -16,7 +16,10 @@ export async function validateDto<T extends object>(dto: T): Promise<void> {
       .map((err) => Object.values(err.constraints || {}).join(', '))
       .join('; ');
 
-    logger.warn(`Validation failed: ${errorMessages}`); 
-    throw new HttpException(`Validation failed: ${errorMessages}`, HttpStatus.BAD_REQUEST); 
+    logger.warn(`Validation failed: ${errorMessages}`);
+    throw new HttpException(
+      `Validation failed: ${errorMessages}`,
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }
