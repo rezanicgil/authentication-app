@@ -38,11 +38,15 @@ const LoginForm: React.FC = () => {
 
       alert("Login successful!");
       navigate("/home");
+
+    } catch (error: any) {
+      if(error?.response?.data?.message === 'Invalid credentials') {
+        alert("Invalid email or password. Please try again.");
+      } else {
+        alert("An error occurred during login. Please try again.");
+      }
       setEmail("");
       setPassword("");
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("An error occurred during login. Please try again.");
     }
   };
 
