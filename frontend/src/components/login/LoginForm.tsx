@@ -16,18 +16,21 @@ const LoginForm: React.FC = () => {
     };
 
     interface LoginResponse {
-      access_token: string;
+      accessToken: string;
     }
 
     try {
-      const response = await request<LoginResponse>("POST", "/auth/login", null, loginData);
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      const response = await request<LoginResponse>("POST", "/authentication/login", headers, null, loginData);
 
-      const { access_token } = response.data;
-      if (!access_token) {
+      const { accessToken } = response.data;
+      if (!accessToken) {
         throw new Error("Token is invalid or expired");
       }
 
-      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("accessToken", accessToken);
 
       alert("Login successful!");
       navigate("/home");

@@ -6,7 +6,7 @@ import { JwtUtil } from '../utils/jwt.util';
 
 @Injectable()
 export class AuthenticationService {
-  async login(loginDto: LoginDto): Promise<{ access_token: string }> {
+  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const { email, password } = loginDto;
     const loginValidationDto = plainToInstance(LoginDto, loginDto);
 
@@ -26,7 +26,7 @@ export class AuthenticationService {
     const token = JwtUtil.signToken(payload);
 
     return {
-      access_token: token,
+      accessToken: token,
     };
   }
 }

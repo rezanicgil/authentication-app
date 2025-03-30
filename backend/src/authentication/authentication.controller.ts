@@ -11,9 +11,9 @@ import { AuthenticationService } from './authentication.service';
 import { LoginDto } from './dto/login.dto';
 import { Request } from 'express';
 
-@Controller('auth')
-export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
+@Controller('authentication')
+export class AuthenticationController {
+  private readonly logger = new Logger(AuthenticationController.name);
 
   constructor(private readonly authService: AuthenticationService) {}
 
@@ -21,7 +21,7 @@ export class AuthController {
   async login(
     @Body() loginDto: LoginDto,
     @Req() req: Request,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ accessToken: string }> {
     const ip = req.ip;
     const maskedEmail = loginDto.email.replace(/(.{2}).+(@.+)/, '$1***$2');
     this.logger.log(`Login attempt for email: ${maskedEmail} from IP: ${ip}`);
