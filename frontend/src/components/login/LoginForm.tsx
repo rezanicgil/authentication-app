@@ -24,7 +24,7 @@ const LoginForm: React.FC = () => {
 
       const { access_token } = response.data;
       if (!access_token) {
-        throw new Error("No access token received from server");
+        throw new Error("Token is invalid or expired");
       }
 
       localStorage.setItem("access_token", access_token);
