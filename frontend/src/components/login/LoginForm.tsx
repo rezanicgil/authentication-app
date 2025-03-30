@@ -22,16 +22,9 @@ const LoginForm: React.FC = () => {
     try {
       const response = await request<LoginResponse>("POST", "/auth/login", null, loginData);
 
-      if (response.status !== 201) {
-        alert("Login failed. Please check your credentials.");
-        setEmail("");
-        setPassword("");
-        return;
-      }
-
       const { access_token } = response.data;
       if (!access_token) {
-        throw new Error("No access token received.");
+        throw new Error("No access token received from server");
       }
 
       localStorage.setItem("access_token", access_token);
